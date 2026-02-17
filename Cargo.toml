@@ -1,0 +1,16 @@
+[package]
+name = "rsvp"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+derive_more = { version = "2.1.1", features = ["display"] }
+html2text = "0.16.7"
+iced = { version = "0.14.0", features = ["tokio"] }
+iced_aw = { version = "0.13.0", features = ["spinner"] }
+oxidize-pdf = "1.7.0"
+pollster = "0.4.0"
+rfd = "0.17.2"
+serde = { version = "1.0.228", features = ["derive"] }
+toml = "1.0.1"
+ttf-parser = "0.25.1"
