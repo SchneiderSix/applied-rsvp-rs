@@ -23,8 +23,38 @@ pub fn main_view(current_state: &State) -> Element<'_, Message> {
         .center_x(Fill)
         .center_y(Fill)
         .into()
+    } else if current_state.fullscreen {
+        let word: [&str; 3]= current_state.get_word();
+        container(
+            column![
+                row![
+                    text(current_state.get_title()).size(10),
+                    Space::new()
+                    .width(Fill),
+                ]
+                .height(Fill),
+                rich_text![
+                    span(word[0])
+                    .color(text_animation(&current_state.get_state_theme().text, &current_state.text_animation, current_state.text_instant))
+                    .font(current_state.current_font),
+                    span(word[1])
+                    .color(text_animation(&current_state.get_state_theme().primary, &current_state.text_animation, current_state.text_instant))
+                    .font(current_state.current_font),
+                    span(word[2])
+                    .color(text_animation(&current_state.get_state_theme().text, &current_state.text_animation, current_state.text_instant))
+                    .font(current_state.current_font),
+                ].on_link_click(never)
+                .size(current_state.get_text_size()),
+                Space::new()
+                .height(Fill),
+            ]
+            .align_x(Center)
+            .spacing(10)
+        )
+        .center_x(Fill)
+        .center_y(Fill)
+        .into()
     } else {
-
         let word: [&str; 3]= current_state.get_word();
         container(
             column![
