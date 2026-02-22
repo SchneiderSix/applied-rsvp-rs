@@ -27,6 +27,8 @@ pub enum Message {
     Tick,
     ArrowLeftPressed,
     ArrowRightPressed,
+    ArrowUpPressed,
+    ArrowDownPressed,
     SpacePressed,
     ResetIndex,
     ToggleFullscreen(FullscreenKey),

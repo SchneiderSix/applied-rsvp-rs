@@ -83,7 +83,7 @@ pub fn new() -> (State, Task<Message>) {
         index: None,
         pause: true,
         text_animation: Animation::new(1.0)
-        .duration(std::time::Duration::from_millis(150))
+        .duration(std::time::Duration::from_millis(50))
         .easing(iced::animation::Easing::EaseInCirc),
         text_instant: time::Instant::now(),
         fullscreen: false,
@@ -246,17 +246,33 @@ pub fn update(current_state: &mut State, message: Message) -> Task<Message> {
             }
             Task::none()
         },
-        Message::ArrowLeftPressed => {
+        Message::ArrowDownPressed => {
             current_state.set_velocity((current_state.get_velocity() + 100).clamp(200, 2000));
             let config_path = get_config_path();
             save_config_file(config_path, &current_state.config);
             Task::none()
         },
-        Message::ArrowRightPressed => {
+        Message::ArrowUpPressed => {
             current_state.set_velocity((current_state.get_velocity() - 100).clamp(200, 2000));
             let config_path = get_config_path();
             save_config_file(config_path, &current_state.config);
             Task::none()
+        },
+        Message::ArrowLeftPressed => {
+            if let Some(_text) = &current_state.text && let Some(mut idx) = current_state.index
+            && idx > 0 {
+                idx -= 1;
+                current_state.index = Some(idx);
+            }
+          Task::none()
+        },
+        Message::ArrowRightPressed => {
+            if let Some(text) = &current_state.text && let Some(mut idx) = current_state.index
+            && idx < text.len() - 1 {
+                idx += 1;
+                current_state.index = Some(idx);
+            }
+          Task::none()
         },
         Message::SpacePressed => {
                 current_state.pause = !current_state.pause;
@@ -332,6 +348,8 @@ pub fn subscription(current_state: &State) -> Subscription<Message> {
         .filter_map(|e: Event| {
             match e {
                 Event::KeyPressed {key, ..} => match key {
+                    Key::Named(Named::ArrowDown) => Some(Message::ArrowDownPressed),
+                    Key::Named(Named::ArrowUp) => Some(Message::ArrowUpPressed),
                     Key::Named(Named::ArrowLeft) => Some(Message::ArrowLeftPressed),
                     Key::Named(Named::ArrowRight) => Some(Message::ArrowRightPressed),
                     Key::Named(Named::Space) => Some(Message::SpacePressed),
